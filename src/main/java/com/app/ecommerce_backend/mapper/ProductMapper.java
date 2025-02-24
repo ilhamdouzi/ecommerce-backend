@@ -10,22 +10,22 @@ public class ProductMapper {
     }
 
     public static ProductDTO toDTO(Product product) {
-        return new ProductDTO(
-                product.getId(),
-                product.getCode(),
-                product.getName(),
-                product.getDescription(),
-                product.getImage(),
-                product.getCategory(),
-                product.getPrice(),
-                product.getQuantity(),
-                product.getInternalReference(),
-                product.getShellId(),
-                product.getInventoryStatus(),
-                product.getRating(),
-                product.getCreatedAt(),
-                product.getUpdatedAt()
-        );
+        return ProductDTO.builder()
+                .id(product.getId())
+                .code(product.getCode())
+                .name(product.getName())
+                .description(product.getDescription())
+                .image(product.getImage())
+                .category(product.getCategory())
+                .price(product.getPrice())
+                .quantity(product.getQuantity())
+                .internalReference(product.getInternalReference())
+                .shellId(product.getShellId())
+                .inventoryStatus(product.getInventoryStatus())
+                .rating(product.getRating())
+                .createdAt(product.getCreatedAt())
+                .updatedAt(product.getUpdatedAt())
+                .build();
     }
 
     public static Product toEntity(ProductDTO productDTO) {

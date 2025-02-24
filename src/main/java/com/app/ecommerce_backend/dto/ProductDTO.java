@@ -2,10 +2,12 @@ package com.app.ecommerce_backend.dto;
 
 import com.app.ecommerce_backend.model.enums.InventoryStatus;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Builder
 public record ProductDTO(
         Long id,
         @NotNull
