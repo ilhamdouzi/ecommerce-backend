@@ -3,9 +3,9 @@ package com.app.ecommerce_backend.service.impl;
 import com.app.ecommerce_backend.dto.ProductDTO;
 import com.app.ecommerce_backend.exception.ResourceNotFoundException;
 import com.app.ecommerce_backend.mapper.ProductMapper;
-import com.app.ecommerce_backend.model.Product;
 import com.app.ecommerce_backend.repository.ProductRepository;
 import com.app.ecommerce_backend.service.ProductService;
+import com.app.ecommerce_backend.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO createProduct(ProductDTO product) {
+
+        log.debug("Initiating admin access check for createProduct");
+        SecurityUtil.checkAdminAccess();
         log.debug("Mapping ProductDTO to entity");
         var productToSave = ProductMapper.toEntity(product);
         log.debug("Saving new product entity to the repository");
@@ -53,6 +56,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
+        log.debug("Initiating admin access check for updateProduct with id: {}", id);
+        SecurityUtil.checkAdminAccess();
         log.debug("Updating product with id: {}", id);
         var existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
@@ -67,6 +72,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
+        log.debug("Initiating admin access check deleteProduct with id: {}", id);
+        SecurityUtil.checkAdminAccess();
         log.debug("Deleting product with id: {}", id);
         if (!productRepository.existsById(id)) {
             log.warn("Attempted to delete non-existent product with id: {}", id);
