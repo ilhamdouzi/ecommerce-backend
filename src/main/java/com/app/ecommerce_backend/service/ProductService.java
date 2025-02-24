@@ -1,7 +1,6 @@
 package com.app.ecommerce_backend.service;
 
 import com.app.ecommerce_backend.dto.ProductDTO;
-import com.app.ecommerce_backend.model.Product;
 
 import java.util.List;
 
