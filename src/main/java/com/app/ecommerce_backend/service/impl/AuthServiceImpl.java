@@ -29,13 +29,14 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse authenticate(AuthRequest request) {
+        log.debug("Starting authentication process for email: {}", request.email());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
         UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(request.email());
         String accessToken = jwtService.generateAccessToken(userDetails);
         String refreshToken = jwtService.generateRefreshToken(userDetails);
-
+        log.info("Authentication successful for email: {}", request.email());
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -44,8 +45,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String register(RegisterRequest request) {
-
+        log.debug("Attempting to register user with email: {}", request.email());
         if (userRepository.findByEmail(request.email()).isPresent()) {
+            log.warn("Registration failed: email {} already taken", request.email());
             throw new InvalidRequestException("Email already taken");
         }
 
@@ -58,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         userRepository.save(user);
-
+        log.info("User registered successfully: {}", request.email());
         return "User registered successfully!";
     }
 }
